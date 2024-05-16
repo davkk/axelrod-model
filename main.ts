@@ -1,51 +1,65 @@
-const canvas = document.querySelector("canvas");
-if (canvas == null) throw new Error("Canvas not found");
+import { debounce, mod, randInt } from "./utils";
 
-const ctx = canvas.getContext("2d");
-if (ctx == null) throw new Error("Context could not be created");
+const canvas = document.querySelector("canvas")!;
 
+const ctx = canvas.getContext("2d")!;
 const { width } = canvas.getBoundingClientRect();
 
-const cellSize = 16;
-const cols = width / cellSize;
+const updates: HTMLSpanElement = document.querySelector("#updates")!;
+const simSpeed: HTMLInputElement = document.querySelector("#speed")!;
+const featuresInput: HTMLInputElement = document.querySelector("#features")!;
+const traitsInput: HTMLInputElement = document.querySelector("#traits")!;
 
-let running = true;
-let numFeatures = 4;
-let numTraits = 5;
+// TODO add slider/select for grid size
+const cellSize = 32;
+const cols = Math.round(width / cellSize);
 
-const cells = Array.from({ length: cols }, () => {
+let numFeatures: number = 2;
+let numTraits: number = 2;
+
+function getCells(cols: number, numFeatures: number, numTraits: number) {
     return Array.from({ length: cols }, () => {
-        return Array.from({ length: numFeatures }, () => {
-            return randInt(numTraits);
+        return Array.from({ length: cols }, () => {
+            return Array.from({ length: numFeatures }, () => {
+                return randInt(numTraits);
+            });
         });
     });
-});
-
-function randInt(max: number) {
-    return Math.floor(Math.random() * max);
 }
 
-function mod(a: number, b: number) {
-    return ((a % b) + b) % b;
-}
+let cells = getCells(cols, numFeatures, numTraits);
 
-function mapFeaturesToColor(features: number[]) {
-    const hue = features.reduce((a, b) => a + b, 0) / features.length;
-    const saturation = 0.8;
-    const lightness = 0.5;
-    const hslColor = `hsl(${hue * 360}, ${saturation * 100}%, ${lightness * 100}%)`;
-    return hslColor;
+function overlap(cell1: number[], cell2: number[], numFeatures: number) {
+    let sameFeatures = 0;
+    for (let idx = 0; idx < numFeatures; ++idx) {
+        if (cell1[idx] === cell2[idx]) {
+            sameFeatures++;
+        }
+    }
+    return 1 - sameFeatures / cell1.length;
 }
 
 function drawGrid() {
-    if (!canvas || !ctx) return;
-
-    ctx.clearRect(0, 0, width, width);
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, width, width);
 
     for (let y = 0; y < cols; ++y) {
         for (let x = 0; x < cols; ++x) {
-            ctx.fillStyle = mapFeaturesToColor(cells[y][x]);
-            ctx.fillRect(y * cellSize, x * cellSize, cellSize, cellSize);
+            const cell = cells[y][x];
+
+            const cellX = cells[y][mod(x + 1, cols)];
+            ctx.strokeStyle = `rgba(0, 0, 0, ${overlap(cell, cellX, +featuresInput.value)}`;
+            ctx.beginPath();
+            ctx.moveTo(x * cellSize, y * cellSize);
+            ctx.lineTo((x + 1) * cellSize, y * cellSize);
+            ctx.stroke();
+
+            const cellY = cells[mod(y + 1, cols)][x];
+            ctx.strokeStyle = `rgba(0, 0, 0, ${overlap(cell, cellY, +featuresInput.value)}`;
+            ctx.beginPath();
+            ctx.moveTo(x * cellSize, y * cellSize);
+            ctx.lineTo(x * cellSize, (y + 1) * cellSize);
+            ctx.stroke();
         }
     }
 }
@@ -57,8 +71,8 @@ const directions = [
     [0, -1],
 ];
 
-function simulate() {
-    for (let step = 0; step < 1000000; ++step) {
+function tick() {
+    for (let inter = 0; inter < +simSpeed.value; ++inter) {
         const y = randInt(cols);
         const x = randInt(cols);
         const [dy, dx] = directions[randInt(directions.length)];
@@ -84,8 +98,25 @@ function simulate() {
             cells[y][x][randFeature] = cell2[randFeature];
         }
     }
+
     drawGrid();
-    requestAnimationFrame(simulate);
+    updates.innerHTML = (+updates.innerText + 1).toString();
+    // requestAnimationFrame(tick);
 }
 
-simulate();
+function updateInputs() {
+    numFeatures = +featuresInput.value;
+    numTraits = +traitsInput.value;
+    updates.innerHTML = "0";
+
+    cells = getCells(cols, numFeatures, numTraits);
+    drawGrid();
+
+    tick();
+}
+
+const onChange = debounce(updateInputs);
+onChange();
+
+featuresInput.addEventListener("change", onChange);
+traitsInput.addEventListener("change", onChange);

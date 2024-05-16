@@ -1,9 +1,66 @@
-<html>
+<html data-theme="business">
     <head>
+        <title>Axelrod model simulation ~ Dawid Karpiński</title>
+        <meta charset="utf-8">
         <script type="module" src="main.ts"></script>
         <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
-        <canvas width="1024px" height="1024px"></canvas>
+        <header class="text-center p-10">
+            <h1 class="text-4xl font-bold mb-2">Axelrod model simulation</h1>
+            <small>~ by Dawid Karpiński</small>
+        </header>
+        <main class="flex items-center justify-center flex-wrap gap-10 p-5">
+            <canvas width="512px" height="512px"></canvas>
+            <div class="bg-neutral rounded-lg flex flex-col gap-10 p-16 w-1/2">
+                <div class="text-center">
+                    <span class="text-xl font-bold">
+                        Number of updates
+                    </span>
+                    <h2 id="updates" class="text-3xl font-bold text-center">
+                        0
+                    </h2>
+                </div>
+                <label>
+                    <span class="text-xl font-bold mb-2">Simulation speed</span>
+                    <input
+                        type="range"
+                        name="speed"
+                        min="100"
+                        max="10000"
+                        step="100"
+                        value="10000"
+                        class="range"
+                        id="speed"
+                    />
+                    <div class="w-full flex justify-between text-xs px-2">
+                        <span>100</span>
+                        <span>10000</span>
+                    </div>
+                </label>
+                <div class="flex justify-between gap-5 flex-wrap">
+                    <label class="flex flex-col">
+                        <span class="text-xl font-bold mb-2">Number of features</span>
+                        <input
+                            id="features"
+                            class="input input-bordered"
+                            type="number"
+                            value="6"
+                            min="1"
+                        />
+                    </label>
+                    <label class="flex flex-col">
+                        <span class="text-xl font-bold mb-2">Number of traits</span>
+                        <input
+                            id="traits"
+                            class="input input-bordered"
+                            type="number"
+                            value="18"
+                            min="2"
+                        />
+                    </label>
+                </div>
+            </div>
+        </main>
     </body>
 </html>
