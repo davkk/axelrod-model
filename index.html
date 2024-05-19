@@ -13,20 +13,31 @@
         <main class="flex items-center justify-center flex-wrap gap-10 p-5">
             <canvas width="512px" height="512px"></canvas>
             <div class="bg-neutral rounded-lg flex flex-col gap-10 p-16 w-1/2">
-                <div class="text-center">
-                    <span class="text-xl font-bold">
-                        Number of updates
-                    </span>
-                    <h2 id="updates" class="text-3xl font-bold text-center">
-                        0
-                    </h2>
+                <div class="flex flex-wrap justify-between">
+                    <label class="flex flex-col gap-2">
+                        <span class="text-xl font-bold">
+                            Number of interactions
+                        </span>
+                        <h2 id="interactions" class="text-4xl font-bold">
+                            0
+                        </h2>
+                    </label>
+                    <label class="flex flex-col gap-2">
+                        <span class="text-xl font-bold mb-2">Grid size</span>
+                        <select id="grid-size" class="select select-bordered">
+                            <option value="64">8x8</option>
+                            <option value="32" selected>16x16</option>
+                            <option value="16">32x32</option>
+                            <option value="8">64x64</option>
+                        </select>
+                    </label>
                 </div>
-                <label>
+                <label class="flex flex-col gap-2">
                     <span class="text-xl font-bold mb-2">Simulation speed</span>
                     <input
                         type="range"
                         name="speed"
-                        min="100"
+                        min="0"
                         max="10000"
                         step="100"
                         value="10000"
@@ -34,13 +45,14 @@
                         id="speed"
                     />
                     <div class="w-full flex justify-between text-xs px-2">
-                        <span>100</span>
+                        <span>0</span>
+                        <span>5000</span>
                         <span>10000</span>
                     </div>
                 </label>
                 <div class="flex justify-between gap-5 flex-wrap">
-                    <label class="flex flex-col">
-                        <span class="text-xl font-bold mb-2">Number of features</span>
+                    <label class="flex flex-col gap-2">
+                        <span class="text-xl font-bold">Number of features</span>
                         <input
                             id="features"
                             class="input input-bordered"
@@ -49,8 +61,8 @@
                             min="1"
                         />
                     </label>
-                    <label class="flex flex-col">
-                        <span class="text-xl font-bold mb-2">Number of traits</span>
+                    <label class="flex flex-col gap-2">
+                        <span class="text-xl font-bold">Number of traits</span>
                         <input
                             id="traits"
                             class="input input-bordered"
