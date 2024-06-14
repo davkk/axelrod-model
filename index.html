@@ -8,7 +8,8 @@
     <body>
         <header class="text-center p-10">
             <h1 class="text-4xl font-bold mb-2">Axelrod model simulation</h1>
-            <small>~ by Dawid Karpiński</small>
+            <small>made by Dawid Karpiński</small>
+            <a href="https://github.com/davkk/axelrod-model">Link to code</a>
         </header>
         <main class="flex items-center justify-center flex-wrap gap-10 p-5">
             <canvas width="512px" height="512px"></canvas>
@@ -25,8 +26,8 @@
                     <label class="flex flex-col gap-2">
                         <span class="text-xl font-bold mb-2">Grid size</span>
                         <select id="grid-size" class="select select-bordered">
-                            <option value="64">8x8</option>
-                            <option value="32" selected>16x16</option>
+                            <option value="64" selected>8x8</option>
+                            <option value="32">16x16</option>
                             <option value="16">32x32</option>
                             <option value="8">64x64</option>
                         </select>
@@ -40,7 +41,7 @@
                         min="0"
                         max="10000"
                         step="100"
-                        value="10000"
+                        value="100"
                         class="range"
                         id="speed"
                     />
@@ -57,7 +58,7 @@
                             id="features"
                             class="input input-bordered"
                             type="number"
-                            value="6"
+                            value="3"
                             min="1"
                         />
                     </label>
@@ -67,7 +68,7 @@
                             id="traits"
                             class="input input-bordered"
                             type="number"
-                            value="18"
+                            value="8"
                             min="2"
                         />
                     </label>

@@ -7,7 +7,7 @@ export function mod(a: number, b: number) {
 }
 
 export function debounce<T extends Function>(cb: T, wait = 20) {
-    let h: Timer;
+    let h: Timer = 0;
     let callable = (...args: any) => {
         clearTimeout(h);
         h = setTimeout(() => cb(...args), wait);

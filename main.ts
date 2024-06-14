@@ -12,6 +12,10 @@ const simSpeed: HTMLInputElement = document.querySelector("#speed")!;
 const featuresInput: HTMLInputElement = document.querySelector("#features")!;
 const traitsInput: HTMLInputElement = document.querySelector("#traits")!;
 
+const footer: HTMLFooterElement = document.querySelector("footer")!;
+
+// const uniqueRegions = [];
+
 class Axelrod {
     private cols: number;
     private cells: number[][][];
@@ -44,6 +48,16 @@ class Axelrod {
         }
         return 1 - sameFeatures / cell1.length;
     }
+
+    // private countUniqueRegions() {
+    //     const regions = new Set();
+    //     for (let y = 0; y < this.cols; ++y) {
+    //         for (let x = 0; x < this.cols; ++x) {
+    //             regions.add(JSON.stringify(this.cells[y][x]));
+    //         }
+    //     }
+    //     return regions.size;
+    // }
 
     private drawGrid() {
         ctx.fillStyle = "white";
@@ -102,12 +116,15 @@ class Axelrod {
                 Math.random() < sameFeatures / this.numFeatures
             ) {
                 const randFeature = randInt(availableFeatures.length);
-                this.cells[y][x][randFeature] = cell2[randFeature];
+                this.cells[y][x][availableFeatures[randFeature]] =
+                    cell2[availableFeatures[randFeature]];
             }
 
             this.interactions++;
         }
 
+        // uniqueRegions.push(this.countUniqueRegions());
+        // footer.innerHTML = JSON.stringify(uniqueRegions);
         this.drawGrid();
         interactionsDisplay.innerHTML = this.interactions.toString();
         requestAnimationFrame(() => this.tick());
@@ -115,6 +132,7 @@ class Axelrod {
 }
 
 function start() {
+    // uniqueRegions.length = 0;
     new Axelrod(
         width,
         +gridSizeSelect.value,
