@@ -1,24 +1,3 @@
----
-title: Axelrod Model - introduction
-author: Dawid Karpiński
-date: 14.06.2024 r.
-documentclass:
-    - article
-header-includes:
-    - \usepackage{paralist}
-    - \usepackage{booktabs}
-    - \usepackage{numprint, xspace, paralist}
-    - \usepackage{hyperref}
-    - \usepackage{cleveref}
-    - \usepackage[utf8]{inputenc}
-    - \usepackage{fixltx2e}
-    - \usepackage[T1]{fontenc}
-    - \usepackage[margin=0.8in]{geometry}
-    - \usepackage{braket}
-    - \usepackage{enumitem}
-    - \setlist[itemize]{leftmargin=0.1in}
----
-
 The Axelrod model is a computational model proposed by Robert Axelrod to simulate the dissemination and evolution of cultural traits within a population. It is based on the principles of homophily (the tendency of individuals to interact with those who are similar to them) and cultural drift (the gradual change in cultural traits over time).
 
 The model represents a population as a grid of cells, where each cell represents an individual agent. Each agent is characterized by a set of cultural features or traits, represented by a vector of values. Initially, these traits are randomly assigned to each agent. The model then proceeds in discrete time steps, during which agents interact with their immediate neighbors on the grid. The interaction involves comparing their respective trait vectors. If two neighboring agents have identical traits, they remain unchanged. However, if they differ in one or more traits, there is a probability that one agent will adopt the trait of the other, making them more similar.
